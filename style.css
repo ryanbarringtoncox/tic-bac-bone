@@ -1,0 +1,57 @@
+body {
+  background: #000;
+}
+.content-wrapper {
+  width: 600px;
+  margin: 0 auto;
+  background: #efefef;
+  min-height: 500px;
+  padding: 5%;
+}
+.square-wrapper {
+  width: 400px;
+  margin: 50px auto;
+  padding-left: 90px;
+}
+.square {
+  position: relative;
+  width: 100px;
+  float: left;
+  height: 100px;
+}
+.square span {
+  position: absolute;
+  left: 30px;
+  top: 20px;
+  font-size: 50px;
+}
+
+/*board styles*/
+#square-1 {
+  border-right: 2px solid #000;
+  border-bottom: 2px solid #000;
+}
+#square-2 {
+  border-bottom: 2px solid #000;
+}
+#square-3 {
+  border-left: 2px solid #000;
+  border-bottom: 2px solid #000;
+}
+#square-4 {
+  border-right: 2px solid #000;;
+}
+#square-6 {
+  border-left: 2px solid #000;;
+}
+#square-7 {
+  border-right: 2px solid #000;
+  border-top: 2px solid #000;
+}
+#square-8 {
+  border-top: 2px solid #000;;
+}
+#square-9 {
+  border-top: 2px solid #000;
+  border-left: 2px solid #000;
+}
