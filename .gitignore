@@ -1,0 +1,6 @@
+._redcar*
+.redcar*
+.redcar/*
+*.bak
+node_modules
+manifest.yml
