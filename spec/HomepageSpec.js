@@ -1,4 +1,4 @@
-var Game = Backbone.Model.extend({
+Game = Backbone.Model.extend({
     
   defaults: {
     currPlayer: "x",
@@ -6,8 +6,9 @@ var Game = Backbone.Model.extend({
     player2: [],
   },
   
-  initalize: function() {
+  initialize: function() {
     console.log("Welcome to a new game!");
+    this.currPlayer = "x";
   },
   
   togglePlayer: function() {
@@ -20,9 +21,8 @@ var Game = Backbone.Model.extend({
     if (playa === "x") {
       this.set({"currPlayer": "o"});
     } else if (playa === "o") {
-      this.set({"currPlayer": "o"});
+      this.set({"currPlayer": "x"});
     }
-    console.log("currPlayer is " + this.get("currPlayer"));
   },  
     
   move: function(sq) {      
@@ -48,7 +48,7 @@ var Game = Backbone.Model.extend({
   
   //get current player
   getCurrPlayer: function() {
-    return this.currPlayer;
+    return currPlayer;
   },
   
   //togglePlayer
@@ -58,23 +58,16 @@ var Game = Backbone.Model.extend({
 describe("Game Model", function() {
   
   var game = new Game();
-  console.log("just made a new game...");
-  console.log("...and currPlayer is " + game.get("currPlayer"));
   
-  
-  it("should return player 'x'", function() {
-    expect(game.get("currPlayer")).toEqual("x");
+  describe("Initialize Game", function () {
+     
+    it("should return player 'x'", function() {
+      expect(game.get("currPlayer")).toEqual("x");
+      console.log("first in code");
+    });    
   });
   
-  game.togglePlayer();
-  
-  it("should return player 'o'", function() {
-    expect(game.get("currPlayer")).toEqual("o");
-  });  
-  
-  it("should return -1 for invalid move", function() {
-    expect(game.move(10)).toEqual(-1);
-  });
-  
+  console.log("second in code");
+  //game.togglePlayer();
   
 });
