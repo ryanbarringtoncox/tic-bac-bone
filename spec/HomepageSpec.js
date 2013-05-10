@@ -1,86 +1,79 @@
 var Game = Backbone.Model.extend({
+    
   defaults: {
-    welcomeMessage: "Welcome to the game!",
     currPlayer: "x",
     player1: [],
     player2: [],
+  },
+  
+  initalize: function() {
+    console.log("Welcome to a new game!");
+  },
+  
+  togglePlayer: function() {
     
-    //call this "move", should just take int 1-9 and check that it's right
-    update: function(currSquare) {
-      console.log(currSquare + " clicked");
-      var currDiv = "#" + currSquare;
-      
-      //check to see if it's already clicked
-      
-      //update the square
-      $(currDiv).addClass("clicked");
-      $(currDiv).append("<span>X</span>");
-    },
+    var playa = this.get("currPlayer");
     
-    move: function(sq) {      
-      
-      //check bounds
-      if (sq < 1 || sq > 9) {
-        return -1;
-      }
-      
-      //isSquareAvaiable
-      
-      //updatePlayer
-      
-      //togglePlayer
-      
-    },
+    console.log("currPlayer is " + playa);
+    console.log("toggling player...")
     
-    //isSquareAvailable(Number)
+    if (playa === "x") {
+      this.set({"currPlayer": "o"});
+    } else if (playa === "o") {
+      this.set({"currPlayer": "o"});
+    }
+    console.log("currPlayer is " + this.get("currPlayer"));
+  },  
     
-    //updatePlayer(Number)
+  move: function(sq) {      
     
-    //isGameWon
+    //check bounds
+    if (sq < 1 || sq > 9) {
+      return -1;
+    }
     
-    //get current player
-    getCurrPlayer: function() {
-      return this.currPlayer;
-    },
+    //isSquareAvaiable
+    
+    //updatePlayer
     
     //togglePlayer
     
-    togglePlayer: function() {
-      
-      console.log("currPlayer is " + this.currPlayer);
-      console.log("toggling player...")
-      
-      if (this.currPlayer == "x") {
-        this.currPlayer = "o";
-      } else if (currPlayer == "o") {
-        this.currPlayer = "x";
-      }
-      console.log("currPlayer is " + this.currPlayer);
-    },
+  },
     
-  }
+  //isSquareAvailable(Number)
+  
+  //updatePlayer(Number)
+  
+  //isGameWon
+  
+  //get current player
+  getCurrPlayer: function() {
+    return this.currPlayer;
+  },
+  
+  //togglePlayer
+    
 });
 
 describe("Game Model", function() {
   
   var game = new Game();
+  console.log("just made a new game...");
+  console.log("...and currPlayer is " + game.get("currPlayer"));
   
-  it("should return welcome message", function() {
-    expect(game.get("welcomeMessage")).toEqual("Welcome to the game!");
-  });
-  /*
+  
   it("should return player 'x'", function() {
-    expect(game.attributes.getCurrPlayer()).toEqual("x");
-  });*/
+    expect(game.get("currPlayer")).toEqual("x");
+  });
   
-  game.attributes.togglePlayer();
+  game.togglePlayer();
   
   it("should return player 'o'", function() {
-    expect(game.attributes.getCurrPlayer()).toEqual("o");
+    expect(game.get("currPlayer")).toEqual("o");
   });  
   
   it("should return -1 for invalid move", function() {
-    expect(game.attributes.move(10)).toEqual(-1);
+    expect(game.move(10)).toEqual(-1);
   });
   
   
