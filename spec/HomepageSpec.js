@@ -2,6 +2,7 @@ Game = Backbone.Model.extend({
     
   defaults: {
     currPlayer: "x",
+    movesMade: 0,
     x: [],
     o: [],
     possibleWins: [ 
@@ -12,6 +13,9 @@ Game = Backbone.Model.extend({
   initialize: function() {
     console.log("Welcome to a new game!");
     this.currPlayer = "x";
+    this.set({"x": []});
+    this.set({"o": []});
+    console.log("currPlayer is " + this.currPlayer);   
   },
   
   togglePlayer: function() {
@@ -43,14 +47,15 @@ Game = Backbone.Model.extend({
       return -1;
     }
 
-    //if square is avaiable update current player's array
+    //if square is available update current player's array
     else if (this.isSquareAvailable(sq)) {
         
       var currPlayer = this.get("currPlayer");
       this.get(currPlayer).push(sq);
-       
+      this.incrMovesMade();
       this.togglePlayer();
       this.isGameWon(currPlayer);
+      this.isGameTied();
         
     }
   },
@@ -82,6 +87,23 @@ Game = Backbone.Model.extend({
     
     return false;
     
+  },
+  
+  isGameTied: function() {
+
+    if (this.get("movesMade") >= 9) {
+      console.log("it's a tie");
+      return true;
+    } else {
+      return false;
+    }
+  },
+  
+  incrMovesMade: function() {
+
+    var mm = this.get("movesMade");
+    mm++;
+    this.set({"movesMade" : mm});
   }
       
 });
@@ -107,9 +129,9 @@ describe("Game Model", function() {
     });    
   });
   
-  describe("Initializes Game, Makes  moves", function () {
+  describe("Game Model some more", function () {
      
-    it("should return 'x' then toggle to 'o'", function() {
+    it("Initializes Game, Makes  moves and win", function() {
  
       expect(game.get("currPlayer")).toEqual("x");
       
@@ -123,7 +145,11 @@ describe("Game Model", function() {
       game.move(1);
       game.move(2);
       game.move(3);
-      game.move(4);      
+      game.move(4);     
+      
+      //check # of moves made
+      var movesMade = game.get("movesMade");
+      expect(movesMade).toEqual(4);
       
       //check player arrays
       var x = game.get("x");
@@ -146,8 +172,30 @@ describe("Game Model", function() {
       game.move(7);
       game.move(9);
       
-      console.log(game.get("x"));
     });    
-  });  
+  }); 
+  
+  describe("Game Model Encore", function () {
+    
+    it("Should end in a tie", function() {
+      
+      //make moves
+      game.move(1); //x
+      game.move(4); 
+      game.move(2); //x
+      game.move(3);
+      game.move(5); //x
+      game.move(8);
+      game.move(6);  //x
+      game.move(9);
+      game.move(7);  //x
+      
+      console.log("moves made is " + game.get("movesMade"));
+      console.log("x: " + game.get("x"));
+      console.log("o: " + game.get("o"));
+      
+    });
+
+  });
   
 });
