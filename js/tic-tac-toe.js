@@ -1,20 +1,115 @@
 (function($) {
   
   var Game = Backbone.Model.extend({
+      
     defaults: {
-      player1: [],
-      player2: [],
-      update: function(currSquare) {
-        console.log(currSquare + " clicked");
-        var currDiv = "#" + currSquare;
+      currPlayer: "x",
+      movesMade: 0,
+      x: [],
+      o: [],
+      possibleWins: [ 
+        [1,2,3], [4,5,6], [7,8,9], [1,4,7], [2,5,8], [3,6,9], [1,5,9], [3,5,7]
+      ]
+    },
+    
+    initialize: function() {
+      console.log("Welcome to a new game!");
+      this.currPlayer = "x";
+      this.set({"x": []});
+      this.set({"o": []});
+      console.log("currPlayer is " + this.currPlayer);   
+    },
+    
+    togglePlayer: function() {
+      
+      var playa = this.get("currPlayer");
+      
+      if (playa === "x") {
+        this.set({"currPlayer": "o"});
+      } else if (playa === "o") {
+        this.set({"currPlayer": "x"});
+      }
+      
+    }, 
+      
+    isSquareAvailable: function(sq) {
+  
+      if (this.get("x").indexOf(sq) === -1 && this.get("o").indexOf(sq) === -1) {
+        return true
+      } else {
+          return false;
+        }
         
-        //check to see if it's already clicked
+    },  
+    
+    move: function(sq) {
+      
+      //check for validity
+      if (sq < 1 || sq > 9 || !this.isSquareAvailable(sq)) {
+        return -1;
+      }
+  
+      //if square is available
+      else  {
+          
+        var currPlayer = this.get("currPlayer");
+        this.get(currPlayer).push(sq);
+        this.incrMovesMade();
+        this.togglePlayer();
+        this.isGameWon(currPlayer);
+        this.isGameTied();
+          
+      }
+    },
         
-        //update the square
-        $(currDiv).addClass("clicked");
-        $(currDiv).append("<span>X</span>");
-      }      
+    //get current player
+    getCurrPlayer: function() {
+      return currPlayer;
+    },
+    
+    isGameWon: function(currPlayer) {
+      console.log("calling isGameWon on " + currPlayer);
+      var playerSquares = this.get(currPlayer);
+      var possibleWins = this.get("possibleWins");
+      console.log("they have " + playerSquares);
+      
+      possibleWins.forEach(function(arr) {
+        console.log("checking " + arr + "...");
+        var matchCounter = 0;
+        arr.forEach(function(a) {    
+          console.log(a+"?");
+          if (playerSquares.indexOf(a) > -1) {
+            console.log("yep");
+            matchCounter++;
+            console.log("match on " + a);
+            if (matchCounter === 3) {
+              console.log("winner is " + currPlayer);
+              return true;
+            }
+          } else {console.log("nope");}
+        });
+      });
+      
+      return false;
+      
+    },
+    
+    isGameTied: function() {
+  
+      if (this.get("movesMade") >= 9) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    
+    incrMovesMade: function() {
+  
+      var mm = this.get("movesMade");
+      mm++;
+      this.set({"movesMade" : mm});
     }
+        
   });
   
   var GameView = Backbone.View.extend({
@@ -56,8 +151,26 @@
     },
     
     makeMove: function(e) {
+      
+      //get square stuff
+      var currPlayer = this.game.get("currPlayer");;
       var currSquare = $(e.currentTarget).attr("id");
-      this.game.attributes.update(currSquare);
+      var sq = currSquare.split('-')[1];
+      
+      //if move is valid update DOM, check for end of game
+      if (this.game.move(sq) !== -1) {
+        
+        $("#" + currSquare).append("<span>" + currPlayer + "</span>");
+
+        if (this.game.isGameWon(currPlayer)) {
+          console.log("won");
+          alert("Game won!"); 
+        }
+        
+        if (this.game.isGameTied()) {
+          alert("Game tied!");
+        }
+      }
     },
     
   });

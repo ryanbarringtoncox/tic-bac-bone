@@ -56,7 +56,7 @@ Game = Backbone.Model.extend({
       this.togglePlayer();
       this.isGameWon(currPlayer);
       this.isGameTied();
-        
+      
     }
   },
       
