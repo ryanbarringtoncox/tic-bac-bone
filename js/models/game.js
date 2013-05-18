@@ -34,7 +34,9 @@ define(["underscore", "backbone"], function (_, Backbone) {
       
     isSquareAvailable: function(sq) {
   
-      if (this.get("x").indexOf(sq) === -1 && this.get("o").indexOf(sq) === -1) {
+      var taken = this.get("x").concat(this.get("o"));
+        
+      if (taken.indexOf(sq) === -1) {
         return true
       } else {
           return false;
@@ -43,54 +45,46 @@ define(["underscore", "backbone"], function (_, Backbone) {
     },  
     
     move: function(sq) {
-      
+            
       //check for validity
-      if (sq < 1 || sq > 9 || !this.isSquareAvailable(sq)) {
+      if (typeof sq !== "number" || sq < 1 || sq > 9 || !this.isSquareAvailable(sq)) {
         return -1;
       }
   
       //if square is available
-      else  {
-          
+      else {   
         var currPlayer = this.get("currPlayer");
         this.get(currPlayer).push(sq);
         this.incrMovesMade();
         this.togglePlayer();
         this.isGameWon(currPlayer);
-        this.isGameTied();
-          
+        this.isGameTied()          
       }
     },
         
-    //get current player
     getCurrPlayer: function() {
       return currPlayer;
     },
     
     isGameWon: function(currPlayer) {
-      console.log("calling isGameWon on " + currPlayer);
+      var bool = false;
       var playerSquares = this.get(currPlayer);
       var possibleWins = this.get("possibleWins");
-      console.log("they have " + playerSquares);
       
       possibleWins.forEach(function(arr) {
-        console.log("checking " + arr + "...");
+
         var matchCounter = 0;
-        arr.forEach(function(a) {    
-          console.log(a+"?");
+        arr.forEach(function(a) {   
           if (playerSquares.indexOf(a) > -1) {
-            console.log("yep");
             matchCounter++;
-            console.log("match on " + a);
             if (matchCounter === 3) {
-              console.log("winner is " + currPlayer);
-              return true;
+              bool = true;
             }
-          } else {console.log("nope");}
+          }
         });
       });
       
-      return false;
+      return bool;
       
     },
     

@@ -6,16 +6,13 @@ define(["game"], function (Game) {
     
     //each describe gets a fresh game instance
     beforeEach(function() {
-      console.log("here0");
       game = new Game();
     });
     
     describe("Initializes Game, Toggle Player", function () {
        
       it("should return 'x' then toggle to 'o'", function() {
-        console.log("here1");
         expect(game.get("currPlayer")).toEqual("x");
-        console.log("here2");
         game.togglePlayer();
         expect(game.get("currPlayer")).toEqual("o");
         
@@ -64,6 +61,8 @@ define(["game"], function (Game) {
         game.move(5);
         game.move(7);
         game.move(9);
+        
+        expect(game.isGameWon("x")).toEqual(true);
         
       });    
     }); 

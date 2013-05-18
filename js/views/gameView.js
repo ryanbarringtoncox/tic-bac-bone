@@ -43,16 +43,17 @@ define(["underscore", "backbone", "game"], function (_, Backbone, Game) {
       //get square stuff
       var currPlayer = this.game.get("currPlayer");;
       var currSquare = $(e.currentTarget).attr("id");
-      var sq = currSquare.split('-')[1];
+      var sq = parseInt(currSquare.split('-')[1]);
       
       //if move is valid update DOM, check for end of game
-      if (this.game.move(sq) !== -1) {
+      if (this.game.move(sq) !== -1 && this.isGameWon) {
         
         $("#" + currSquare).append("<span>" + currPlayer + "</span>");
   
         if (this.game.isGameWon(currPlayer)) {
-          console.log("won");
-          alert("Game won!"); 
+          alert("winner is " + currPlayer);
+          //make remaining squares unclickable
+          $(".square").addClass("clicked");
         }
         
         if (this.game.isGameTied()) {
