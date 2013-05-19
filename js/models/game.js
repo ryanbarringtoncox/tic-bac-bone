@@ -3,6 +3,7 @@ define(["underscore", "backbone"], function (_, Backbone) {
   var Game = Backbone.Model.extend({
           
     defaults: {
+      won: false,
       currPlayer: "x",
       movesMade: 0,
       x: [],
@@ -14,10 +15,16 @@ define(["underscore", "backbone"], function (_, Backbone) {
     
     initialize: function() {
       console.log("Welcome to a new game!");
+      this.movesMade = 0;
+      this.won = false;
       this.currPlayer = "x";
       this.set({"x": []});
       this.set({"o": []});
       console.log("currPlayer is " + this.currPlayer);   
+    },
+    
+    setGameWon: function() {
+      this.set({"won": true});
     },
     
     togglePlayer: function() {
@@ -47,7 +54,7 @@ define(["underscore", "backbone"], function (_, Backbone) {
     move: function(sq) {
             
       //check for validity
-      if (typeof sq !== "number" || sq < 1 || sq > 9 || !this.isSquareAvailable(sq)) {
+      if (this.get("won") || typeof sq !== "number" || sq < 1 || sq > 9 || !this.isSquareAvailable(sq)) {
         return -1;
       }
   
@@ -58,7 +65,8 @@ define(["underscore", "backbone"], function (_, Backbone) {
         this.incrMovesMade();
         this.togglePlayer();
         this.isGameWon(currPlayer);
-        this.isGameTied()          
+        this.isGameTied() 
+        return 1;
       }
     },
         
@@ -67,6 +75,7 @@ define(["underscore", "backbone"], function (_, Backbone) {
     },
     
     isGameWon: function(currPlayer) {
+      var that = this;
       var bool = false;
       var playerSquares = this.get(currPlayer);
       var possibleWins = this.get("possibleWins");
@@ -79,6 +88,7 @@ define(["underscore", "backbone"], function (_, Backbone) {
             matchCounter++;
             if (matchCounter === 3) {
               bool = true;
+              that.setGameWon();
             }
           }
         });
