@@ -28,7 +28,7 @@ define(["underscore", "backbone", "game"], function (_, Backbone, Game) {
       }
       
       //append reset button
-      $(this.el).append("<button id='reset'>Reset</button>")
+      $(this.el).append("<button id='reset'>Reset</button>");
   
     },
     
@@ -39,9 +39,9 @@ define(["underscore", "backbone", "game"], function (_, Backbone, Game) {
     makeMove: function(e) {
 
       //get square stuff
-      var currPlayer = this.game.get("currPlayer");;
+      var currPlayer = this.game.get("currPlayer");
       var currSquare = $(e.currentTarget).attr("id");
-      var sq = parseInt(currSquare.split('-')[1]);
+      var sq = parseInt(currSquare.split('-')[1],10);
       
       //if move is valid update DOM, check for end of game
       if (this.game.move(sq) !== -1) {

@@ -44,7 +44,7 @@ define(["underscore", "backbone"], function (_, Backbone) {
       var taken = this.get("x").concat(this.get("o"));
         
       if (taken.indexOf(sq) === -1) {
-        return true
+        return true;
       } else {
           return false;
         }
@@ -65,7 +65,7 @@ define(["underscore", "backbone"], function (_, Backbone) {
         this.incrMovesMade();
         this.togglePlayer();
         this.isGameWon(currPlayer);
-        this.isGameTied() 
+        this.isGameTied(); 
         return 1;
       }
     },
